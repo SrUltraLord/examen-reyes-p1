@@ -6,30 +6,34 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
-@Table(name = "SEG_USUARIO")
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "seg_usuario")
 public class Usuario implements Serializable {
-    private static final long serialVersionUID = -6859898053368196963L;
+    private static final long serialVersionUID = -4384023921630907199L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COD_USUARIO", nullable = false)
+    @Column(name = "cod_usuario", nullable = false)
     private Integer pk;
 
-    @Column(name = "USERNAME", length = 32, nullable = false)
+    @Column(name = "username", nullable = false, length = 32)
     private String username;
 
-    @Column(name = "NOMBRE", length = 128, nullable = false)
+    @Column(name = "nombre", nullable = false, length = 128)
     private String nombre;
 
-    @Column(name = "ESTADO", length = 3, nullable = false)
+    @Column(name = "estado", nullable = false, length = 3)
     private String estado;
 
-    @Column(name = "CLAVE", nullable = false)
+    @Column(name = "clave", nullable = false, length = 64)
     private String clave;
+
+    @OneToMany(mappedBy = "codUsuario")
+    private List<UsuarioEspacio> usuarioEspacios;
 
     public Usuario(Integer pk) {
         this.pk = pk;

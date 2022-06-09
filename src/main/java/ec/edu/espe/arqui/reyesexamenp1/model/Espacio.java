@@ -7,23 +7,31 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.List;
 
-@Table(name = "GDC_ESPACIO")
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "gdc_espacio")
 public class Espacio implements Serializable {
-    private static final long serialVersionUID = -8459128164149665569L;
-
+    private static final long serialVersionUID = -2401031085050121571L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COD_ESPACIO", nullable = false)
-    private Integer pk;
+    @Column(name = "cod_espacio", nullable = false)
+    private Integer id;
 
-    @Column(name = "NOMBRE", length = 128, nullable = false)
+    @Column(name = "nombre", nullable = false, length = 128)
     private String nombre;
 
-    @Column(name = "FECHA_CREACION", nullable = false)
-    LocalDate fechaCreacion;
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDate fechaCreacion;
+
+    @OneToMany(mappedBy = "espacio")
+    private List<Contenido> contenidos;
+
+    @OneToMany(mappedBy = "codEspacio")
+    private List<UsuarioEspacio> usuarioEspacios;
+
 }

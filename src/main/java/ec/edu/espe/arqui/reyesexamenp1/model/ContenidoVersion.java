@@ -5,43 +5,45 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Table(name = "GDC_CONTENIDO_VERSION")
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class ContenidoVersion {
-    private static final long serialVersionUID = 8182377104L;
-
+@Entity
+@Table(name = "gdc_contenido_version")
+public class ContenidoVersion implements Serializable {
+    private static final long serialVersionUID = -3176150544669142317L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COD_CONTENIDO_VERSION", nullable = false)
+    @Column(name = "cod_contenido_version", nullable = false)
     private Integer pk;
 
-    @Column(name = "COD_CONTENIDO", nullable = false,
-        insertable = false, updatable = false)
-    private Integer codContenido;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cod_contenido", nullable = false)
+    private Contenido codContenido;
 
-    @Column(name = "HASH_ARCHIVO", length = 64, nullable = false)
+    @Column(name = "hash_archivo", nullable = false, length = 64)
     private String hashArchivo;
 
-    @Column(name = "TAMANIO", nullable = false)
+    @Column(name = "nombre_archivo", nullable = false, length = 256)
+    private String nombreArchivo;
+
+    @Column(name = "tamanio", nullable = false, precision = 9)
     private BigDecimal tamanio;
 
-    @Column(name = "VERSION", nullable = false)
+    @Column(name = "version", nullable = false, precision = 4, scale = 2)
     private BigDecimal version;
 
-    @Column(name = "COMENTARIO", length = 500)
+    @Column(name = "comentario", length = 500)
     private String comentario;
 
-    @Column(name = "FECHA_CREACION", nullable = false)
-    LocalDateTime fechaHoraCreacion;
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDate fechaCreacion;
 
-    // TODO: check this code
-    @Column(name = "COD_USUARIO_CREACION", nullable = false)
+    @Column(name = "cod_usuario_creacion", nullable = false)
     private Integer codUsuarioCreacion;
 
     public ContenidoVersion(Integer pk) {

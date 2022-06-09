@@ -4,24 +4,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Table(name = "SEG_USUARIO_ESPACIO")
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "seg_usuario_espacio")
 public class UsuarioEspacio implements Serializable {
-    private static final long serialVersionUID = -9183710077510L;
-
+    private static final long serialVersionUID = -7374912659448674644L;
     @EmbeddedId
     private UsuarioEspacioPk pk;
 
-    @Column(name = "ESTADO", nullable = false)
+    @MapsId("codEspacio")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cod_espacio", nullable = false)
+    private Espacio codEspacio;
+
+    @MapsId("codUsuario")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cod_usuario", nullable = false)
+    private Usuario codUsuario;
+
+    @Column(name = "estado", nullable = false, length = 3)
     private String estado;
 
     public UsuarioEspacio(UsuarioEspacioPk pk) {

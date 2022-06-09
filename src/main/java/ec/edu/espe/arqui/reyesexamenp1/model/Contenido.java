@@ -9,46 +9,46 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Table(name = "GDC_ESPACIO")
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "GDC_CONTENIDO")
 public class Contenido implements Serializable {
-    private static final long serialVersionUID = 1235287581L;
-
+    private static final long serialVersionUID = 3281221416592872220L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COD_CONTENIDO", nullable = false)
     private Integer pk;
 
-    @OneToOne(mappedBy = "pk")
-    @JoinColumn(name = "COD_ESPACIO", referencedColumnName = "COD_ESPACIO",
-            insertable = false, updatable = false)
-    Espacio espacio;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "COD_ESPACIO", nullable = false)
+    private Espacio espacio;
 
-    @JoinColumn(name = "COD_CONTENIDO_PADRE", referencedColumnName = "COD_CONTENIDO_PADRE",
-            insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COD_CONTENIDO_PADRE")
     private Contenido contenidoPadre;
+
+    @Column(name = "TIPO_CONTENIDO", nullable = false)
+    private BigDecimal tipoContenido;
+
+    @Column(name = "NOMBRE", nullable = false, length = 256)
+    private String nombre;
+
+    @Column(name = "NOMBRE_ARCHIVO", length = 256)
+    private String nombreArchivo;
+
+    @Column(name = "VERSION", precision = 4, scale = 2)
+    private BigDecimal version;
+
+    @Column(name = "ESTADO")
+    private Integer estado;
+
+    @OneToMany(mappedBy = "contenidoPadre")
+    private List<Contenido> contenidos;
 
     @OneToMany(mappedBy = "codContenido")
     private List<ContenidoVersion> versiones;
-
-    @Column(name = "TIPO_CONTENIDO", length = 2, nullable = false)
-    private Integer tipoContenido;
-
-    @Column(name = "NOMBRE", length = 256, nullable = false)
-    private String nombre;
-
-    @Column(name = "NOMBRE_ARCHIVO", length = 256, nullable = false)
-    private String nombreArchivo;
-
-    @Column(name = "VERSION", nullable = false)
-    private BigDecimal version;
-
-    @Column(name = "ESTADO", nullable = false)
-    private Integer estado;
 
     public Contenido(Integer pk) {
         this.pk = pk;
